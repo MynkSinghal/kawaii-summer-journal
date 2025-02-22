@@ -1,166 +1,117 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Heart, Sun, CloudSun, IceCream, Sparkles, Star } from "lucide-react";
+import { CalendarDays, Mail, Clock, MapPin, Cloud, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
-  const [isHovering, setIsHovering] = useState("");
-
-  const features = [
-    {
-      icon: <Heart className="w-6 h-6 text-kawaii-pink" />,
-      title: "Express Yourself",
-      description: "Write your thoughts in a beautiful, personalized journal.",
-      bgColor: "bg-kawaii-pink/10",
-    },
-    {
-      icon: <Sun className="w-6 h-6 text-kawaii-yellow" />,
-      title: "Daily Reflections",
-      description: "Track your moods and celebrate daily moments of joy.",
-      bgColor: "bg-kawaii-yellow/10",
-    },
-    {
-      icon: <CloudSun className="w-6 h-6 text-kawaii-lavender" />,
-      title: "Create Memories",
-      description: "Attach photos and mementos to your journal entries.",
-      bgColor: "bg-kawaii-lavender/10",
-    },
-    {
-      icon: <IceCream className="w-6 h-6 text-kawaii-peach" />,
-      title: "Stay Inspired",
-      description: "Customize your journal with cute themes and stickers.",
-      bgColor: "bg-kawaii-peach/10",
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-kawaii-pink/20 via-kawaii-lavender/10 to-kawaii-yellow/20">
-      {/* Hero Section */}
-      <section className="container px-4 py-24 mx-auto text-center relative">
+    <div className="min-h-screen bg-gradient-to-b from-blue-500 via-blue-400 to-orange-200 overflow-hidden">
+      {/* Main Content */}
+      <div className="container px-4 py-24 mx-auto text-center relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-3xl mx-auto space-y-8"
+          className="max-w-4xl mx-auto"
         >
-          <div className="relative inline-block">
-            <span className="inline-block px-6 py-2 mb-4 text-sm font-medium rounded-full bg-kawaii-pink/20 text-pink-700">
-              ✨ Your Daily Journal Adventure
-            </span>
-            <motion.div
-              animate={{
-                rotate: [0, 15, -15, 0],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute -right-4 -top-4"
-            >
-              <Star className="w-6 h-6 text-kawaii-yellow fill-current" />
-            </motion.div>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">
-            Make Every Day
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              className="block text-pink-600 relative"
-            >
-              Magical
-              <Sparkles className="absolute -right-12 top-0 w-8 h-8 text-kawaii-yellow animate-bounce-slight" />
-            </motion.span>
+          {/* Hero Text */}
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight">
+            Your journal is closer than ever to your todos and calendar
           </h1>
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-            Express yourself in a beautiful digital journal filled with kawaii vibes
-            and summer memories.
+          <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed">
+            No need to break up with your apps, just connect them. Like to miss moments? Not with your journal in the menubar.
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button
-              size="lg"
-              className="bg-kawaii-pink hover:bg-kawaii-pink/90 text-pink-700 transform hover:scale-105 transition-transform duration-200"
-            >
-              <Heart className="w-4 h-4 mr-2" /> Start Journaling
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-2 border-kawaii-lavender text-purple-700 hover:bg-kawaii-lavender/20 transform hover:scale-105 transition-transform duration-200"
-            >
-              <Star className="w-4 h-4 mr-2" /> Learn More
-            </Button>
-          </div>
+
+          {/* Main UI Preview */}
+          <motion.div 
+            initial={{ y: 40, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="relative mx-auto max-w-3xl"
+          >
+            <div className="bg-white/90 backdrop-blur-lg rounded-2xl p-8 shadow-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex space-x-2">
+                  {["Mon", "Tue", "Wed", "Thu", "Fri"].map((day, i) => (
+                    <div key={i} className="px-3 py-2 bg-white rounded-xl shadow-sm">
+                      <div className="text-sm text-gray-500">{day}</div>
+                      <div className="font-bold">{12 + i}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="h-48 bg-white rounded-xl mb-4"></div>
+            </div>
+          </motion.div>
         </motion.div>
-      </section>
-
-      {/* Features Section */}
-      <section className="container px-4 py-16 mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className={`relative p-6 rounded-2xl shadow-lg card-hover ${feature.bgColor}`}
-              onMouseEnter={() => setIsHovering(`feature-${index}`)}
-              onMouseLeave={() => setIsHovering("")}
-            >
-              <motion.div
-                className="mb-4"
-                animate={
-                  isHovering === `feature-${index}`
-                    ? {
-                        scale: [1, 1.2, 1],
-                        rotate: [0, 10, -10, 0],
-                      }
-                    : {}
-                }
-                transition={{ duration: 0.5 }}
-              >
-                {feature.icon}
-              </motion.div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">
-                {feature.title}
-              </h3>
-              <p className="text-gray-600">{feature.description}</p>
-              {isHovering === `feature-${index}` && (
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute -top-1 -right-1 w-3 h-3 bg-kawaii-pink rounded-full"
-                />
-              )}
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Floating 3D Elements (inspired by Amie) */}
-      <div className="fixed top-20 left-10 animate-float opacity-20">
-        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-kawaii-yellow to-kawaii-peach"></div>
-      </div>
-      <div className="fixed bottom-20 right-10 animate-float-delayed opacity-20">
-        <div className="w-32 h-32 rounded-full bg-gradient-to-br from-kawaii-pink to-kawaii-lavender"></div>
-      </div>
-      <div className="fixed top-40 right-20 animate-float-more-delayed opacity-20">
-        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-kawaii-lavender to-kawaii-yellow"></div>
       </div>
 
-      {/* Weather-like Info Section (inspired by Amie) */}
+      {/* Floating 3D Elements */}
+      <motion.div 
+        animate={{ 
+          y: [0, -20, 0],
+          rotate: [0, 5, 0]
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="absolute top-40 right-[15%] w-32 h-32 rounded-3xl bg-gradient-to-br from-pink-200 to-pink-300 shadow-xl"
+        style={{ transform: "perspective(1000px) rotateX(20deg)" }}
+      />
+      <motion.div
+        animate={{ 
+          y: [0, 20, 0],
+          rotate: [0, -5, 0]
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.5
+        }}
+        className="absolute bottom-40 left-[15%] w-40 h-40 rounded-full bg-gradient-to-br from-purple-200 to-purple-300 shadow-xl opacity-90"
+      />
+
+      {/* Info Bar */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-white/80 backdrop-blur-lg rounded-2xl p-6 shadow-lg"
+        className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-xl rounded-2xl p-6 shadow-lg max-w-2xl w-full mx-4"
       >
-        <div className="flex items-center gap-4 text-gray-700">
-          <Sun className="w-6 h-6 text-kawaii-yellow" />
-          <span className="text-lg">Ready to start your journaling adventure?</span>
-          <CloudSun className="w-6 h-6 text-kawaii-lavender" />
+        <div className="flex items-center justify-center gap-3 text-gray-700">
+          <Clock className="w-5 h-5" />
+          <span className="text-xl font-medium">5:00 PM</span>
+          <Cloud className="w-5 h-5" />
+          <span className="text-xl">mostly clear in</span>
+          <MapPin className="w-5 h-5" />
+          <span className="text-xl">New Delhi</span>
         </div>
+        <div className="flex items-center justify-center gap-3 mt-2 text-gray-600">
+          <Mail className="w-5 h-5" />
+          <span>2 emails</span>
+          <span className="text-gray-400">•</span>
+          <CalendarDays className="w-5 h-5" />
+          <span>2 meetings today</span>
+        </div>
+      </motion.div>
+
+      {/* App Dock */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8 }}
+        className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800/80 backdrop-blur-xl rounded-full p-2 shadow-lg"
+        style={{ width: 'fit-content' }}
+      >
+        {[1, 2, 3, 4].map((_, i) => (
+          <div
+            key={i}
+            className="inline-block w-12 h-12 mx-1 rounded-full bg-white/10"
+          />
+        ))}
       </motion.div>
     </div>
   );
