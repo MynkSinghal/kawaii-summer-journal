@@ -35,13 +35,12 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-kawaii-pink/20 via-kawaii-lavender/20 to-kawaii-yellow/20">
+    <div className="min-h-screen bg-gradient-to-br from-kawaii-pink/20 via-kawaii-lavender/10 to-kawaii-yellow/20">
       {/* Hero Section */}
       <section className="container px-4 py-24 mx-auto text-center relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
           className="max-w-3xl mx-auto space-y-8"
         >
           <div className="relative inline-block">
@@ -139,7 +138,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Decorative Elements */}
+      {/* Floating 3D Elements (inspired by Amie) */}
       <div className="fixed top-20 left-10 animate-float opacity-20">
         <div className="w-24 h-24 rounded-full bg-gradient-to-br from-kawaii-yellow to-kawaii-peach"></div>
       </div>
@@ -149,6 +148,20 @@ const Index = () => {
       <div className="fixed top-40 right-20 animate-float-more-delayed opacity-20">
         <div className="w-16 h-16 rounded-full bg-gradient-to-br from-kawaii-lavender to-kawaii-yellow"></div>
       </div>
+
+      {/* Weather-like Info Section (inspired by Amie) */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-white/80 backdrop-blur-lg rounded-2xl p-6 shadow-lg"
+      >
+        <div className="flex items-center gap-4 text-gray-700">
+          <Sun className="w-6 h-6 text-kawaii-yellow" />
+          <span className="text-lg">Ready to start your journaling adventure?</span>
+          <CloudSun className="w-6 h-6 text-kawaii-lavender" />
+        </div>
+      </motion.div>
     </div>
   );
 };
