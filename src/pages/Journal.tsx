@@ -1,21 +1,14 @@
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { PenLine, Image, Calendar, Plus, FileText, ArrowLeft } from "lucide-react";
+import { Calendar, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-
-const moods = [
-  { name: "Happy", color: "bg-kawaii-yellow/20 text-yellow-700" },
-  { name: "Excited", color: "bg-orange-200/20 text-orange-700" },
-  { name: "Grateful", color: "bg-green-200/20 text-green-700" },
-  { name: "Calm", color: "bg-blue-200/20 text-blue-700" },
-  { name: "Tired", color: "bg-purple-200/20 text-purple-700" },
-  { name: "Sad", color: "bg-gray-200/20 text-gray-700" },
-  { name: "Anxious", color: "bg-red-200/20 text-red-700" },
-  { name: "Frustrated", color: "bg-pink-200/20 text-pink-700" }
-];
+import { MoodSelector } from "@/components/journal/MoodSelector";
+import { FileUploader } from "@/components/journal/FileUploader";
+import { JournalHeader } from "@/components/journal/JournalHeader";
 
 const Journal = () => {
   const [content, setContent] = useState("");
@@ -111,16 +104,7 @@ const Journal = () => {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-4xl mx-auto"
       >
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Today's Journal</h1>
-          <Link to="/calendar">
-            <Button
-              className="bg-white/90 hover:bg-white text-blue-600"
-            >
-              <Calendar className="w-4 h-4 mr-2" /> View All Entries
-            </Button>
-          </Link>
-        </div>
+        <JournalHeader />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -140,44 +124,7 @@ const Journal = () => {
                 })}
               </span>
             </div>
-            <div className="flex items-center space-x-2">
-              <input
-                type="file"
-                id="image-upload"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) handleFileUpload(file, "temp-id");
-                }}
-              />
-              <input
-                type="file"
-                id="document-upload"
-                accept=".pdf,.doc,.docx"
-                className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) handleFileUpload(file, "temp-id");
-                }}
-              />
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="bg-white/80"
-                onClick={() => document.getElementById('image-upload')?.click()}
-              >
-                <Image className="w-4 h-4" />
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="bg-white/80"
-                onClick={() => document.getElementById('document-upload')?.click()}
-              >
-                <FileText className="w-4 h-4" />
-              </Button>
-            </div>
+            <FileUploader onFileUpload={handleFileUpload} />
           </div>
 
           <textarea
@@ -187,24 +134,10 @@ const Journal = () => {
             onChange={(e) => setContent(e.target.value)}
           />
 
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-4 text-gray-700">How are you feeling?</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {moods.map((mood) => (
-                <button
-                  key={mood.name}
-                  className={`p-3 rounded-xl transition-all ${
-                    selectedMood === mood.name 
-                      ? `${mood.color} scale-105 ring-2 ring-blue-400` 
-                      : mood.color + ' hover:scale-105'
-                  }`}
-                  onClick={() => setSelectedMood(mood.name)}
-                >
-                  {mood.name}
-                </button>
-              ))}
-            </div>
-          </div>
+          <MoodSelector 
+            selectedMood={selectedMood}
+            onMoodSelect={setSelectedMood}
+          />
 
           <div className="mt-6 flex justify-end">
             <Button
