@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PenLine, LogIn, LogOut } from "lucide-react";
@@ -10,12 +9,16 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-b from-blue-500 via-blue-400 to-orange-200 overflow-hidden">
       {/* Auth Buttons */}
       <div className="absolute top-6 right-6 flex gap-4">
-        <Button variant="outline" className="bg-white/80 backdrop-blur-lg">
-          <LogIn className="w-4 h-4 mr-2" /> Sign In
-        </Button>
-        <Button variant="outline" className="bg-white/80 backdrop-blur-lg">
-          <LogOut className="w-4 h-4 mr-2" /> Sign Up
-        </Button>
+        <Link to="/auth">
+          <Button variant="outline" className="bg-white/80 backdrop-blur-lg">
+            <LogIn className="w-4 h-4 mr-2" /> Sign In
+          </Button>
+        </Link>
+        <Link to="/auth?signup=true">
+          <Button variant="outline" className="bg-white/80 backdrop-blur-lg">
+            <LogOut className="w-4 h-4 mr-2" /> Sign Up
+          </Button>
+        </Link>
       </div>
 
       {/* Main Content */}
