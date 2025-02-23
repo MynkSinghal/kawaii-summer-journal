@@ -1,9 +1,8 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { PenLine, Image, Calendar, Plus, FileText, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -22,19 +21,43 @@ const Journal = () => {
   const [content, setContent] = useState("");
   const [selectedMood, setSelectedMood] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error("Please login first");
+        navigate("/auth");
+      } else {
+        setIsAuthenticated(true);
+      }
+    };
+    
+    checkAuth();
+  }, [navigate]);
 
   const handleFileUpload = async (file: File, journalId: string) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('journalId', journalId);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('journalId', journalId);
 
-    const { error } = await supabase.functions.invoke('upload-attachment', {
-      body: formData,
-    });
+      const { data, error } = await supabase.functions.invoke('upload-attachment', {
+        body: formData,
+      });
 
-    if (error) {
-      toast.error('Failed to upload file');
+      if (error) {
+        toast.error('Failed to upload file');
+        throw error;
+      }
+
+      toast.success('File uploaded successfully!');
+      return data.filePath;
+    } catch (error) {
       console.error('Upload error:', error);
+      toast.error('Failed to upload file');
     }
   };
 
@@ -64,6 +87,8 @@ const Journal = () => {
       toast.success("Journal entry saved!");
       setContent("");
       setSelectedMood("");
+      
+      navigate("/calendar");
     } catch (error: any) {
       toast.error(error.message);
     } finally {
@@ -71,9 +96,10 @@ const Journal = () => {
     }
   };
 
+  if (!isAuthenticated) return null;
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-kawaii-pink via-kawaii-lavender to-kawaii-yellow p-8">
-      {/* Back Button */}
+    <div className="min-h-screen bg-gradient-to-br from-[#9DB5FF] via-[#B6CCFE] to-[#E2E8FF] p-8">
       <Link to="/" className="absolute top-6 left-6">
         <Button variant="ghost" className="text-gray-700 hover:text-gray-900">
           <ArrowLeft className="w-4 h-4 mr-2" /> Back
@@ -85,7 +111,6 @@ const Journal = () => {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-4xl mx-auto"
       >
-        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Today's Journal</h1>
           <Link to="/calendar">
@@ -97,7 +122,6 @@ const Journal = () => {
           </Link>
         </div>
 
-        {/* Journal Entry Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -163,7 +187,6 @@ const Journal = () => {
             onChange={(e) => setContent(e.target.value)}
           />
 
-          {/* Mood Selection */}
           <div className="mt-6">
             <h3 className="text-lg font-semibold mb-4 text-gray-700">How are you feeling?</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -194,7 +217,6 @@ const Journal = () => {
           </div>
         </motion.div>
 
-        {/* Floating Elements */}
         <motion.div
           animate={{ 
             y: [0, -20, 0],
